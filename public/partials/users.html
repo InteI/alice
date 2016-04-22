@@ -1,19 +1,99 @@
-<a ui-sref="newUser" class="btn-primary btn-lg nodecoration">Add New User</a>
-<table class="table movietable">
-    <tr>
-        <td><h3>All Users</h3></td>
-        <td></td>
-    </tr>
-    <tr ng-repeat="user in users">
-        <td>{{user.name}}</td>
-        <td>{{user.lastname}}</td>
-        <td>{{user.username}}</td>
-        <td>{{user.department.name}}</td>
-        <td>{{user.team.name}}</td>
-        <td>
-            <a class="btn btn-primary" ui-sref="viewUser({id:user._id})">View</a>
-            <a class="btn btn-primary" ui-sref="editUser({id:user._id})">Edit</a>
-            <a class="btn btn-danger"  ng-click="deleteUser(user)">Delete</a>
-        </td>
-    </tr>
-</table>
+<div class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">
+    User Edit
+  </div>
+  <div class="content" ng-include="user-edit.html">
+
+  </div>
+</div>
+<div class="user-add-button ui fixed bottom sticky " ng-show="currentUser.role.name == 'Admin' || currentUser.role.name == 'God'">
+  <button ui-sref="newUser" class="circular teal ui icon button addpopup">
+    <i class="icon add user big"></i>
+  </button>
+</div>
+<div class="ui modal user-delete-modal">
+ <i class="close big icon"></i>
+ <div class="header">
+   Delete user
+ </div>
+ <div class="image content">
+   <div class="image">
+     <i class="archive small icon"></i>
+   </div>
+   <div class="description">
+     <p>Are you sure you want to delete user?</p>
+   </div>
+ </div>
+ <div class="actions">
+   <div class="two fluid ui inverted buttons">
+     <div class="ui red inverted button">
+       <i class="remove icon"></i>
+       No
+     </div>
+     <div class="ui green inverted button" >
+       <i class="checkmark icon"></i>
+       Yes
+     </div>
+   </div>
+ </div>
+</div>
+<h3 class="ui header">All users</h3>
+<div class="ui link cards user-cards grid">
+    <div class="card sixteen wide mobile seven wide tablet five wide computer column" ng-repeat="user in users | filter:$root.search">
+      <div class="image user-cards_img" ui-sref="viewUser({id:user._id})">
+       <img ng-src="{{user.avatar}}" alt="{{user.name}}">
+      </div>
+      <div class="content">
+        <div class="header"><span ng-bind="user.name"></span> <span ng-bind="user.lastname"></span></div>
+        <div class="meta">
+          <a ng-bind="user.position"></a>
+        </div>
+      </div>
+      <div class="content">
+        <div class="description">
+          <div class="ui list user-details">
+            <div class="item">
+              <i class="building outline large icon"></i>
+              <div class="content">
+                <h4 ng-bind="user.department.name"></h4>
+              </div>
+            </div>
+            <div class="item">
+              <i class="angellist large icon"></i>
+              <div class="content">
+                <h4 ng-bind="user.team.name"></h4>
+              </div>
+            </div>
+            <div class="item">
+              <i class="text telephone large icon"></i>
+              <div class="content">
+                <h4 ng-bind="user.phone"></h4>
+              </div>
+            </div>
+            <div class="item">
+              <i class="at large icon"></i>
+              <div class="content">
+                <h4><a target="_blank" href="mailto:{{user.email}}" ng-bind="user.email"></a></h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="extra content">
+        <span class="right floated">
+          <button class="ui orange basic button user-delete-modal_show" ng-click="deleteUser(user)" ng-show="currentUser.role.name == 'God'">
+            <i class="icon remove user"></i>
+            Delete
+          </button>
+        </span>
+        <span>
+          <button class="ui teal basic button" ui-sref="editUser({id:user._id})" ng-show="currentUser.role.name == 'Admin' || currentUser.role.name == 'God'"  ui-sref="editUser({id:user._id})">
+            <i class="icon write"></i>
+            Edit
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

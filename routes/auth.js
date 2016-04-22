@@ -22,7 +22,7 @@ router.route('/')
       } else if (user) {
 
         // check if password matches
-        if (user.password != req.body.password) {
+        if (user.password != User.hashPassword(req.body.password)) {
           res.status(400).json({
             success: false,
             message: 'Authentication failed. Wrong password.'
@@ -38,7 +38,8 @@ router.route('/')
           res.json({
             success: true,
             message: 'Enjoy your token!',
-            token: token
+            token: token,
+            user: user
           });
         }
 
